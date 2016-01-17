@@ -8,9 +8,8 @@ export default function parseObject (tokens) {
 
     Require.objectStart(tokens.pop());
     while (!Require.isObjectEnd(tokens.peek())) {
-        Require.enumeration(tokens.pop(), first);
+        object.members.push(parseKeyValue(tokens, first));
         first = false;
-        object.members.push(parseKeyValue(tokens));
     }
     Require.objectEnd(tokens.pop());
     return object;
