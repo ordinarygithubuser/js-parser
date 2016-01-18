@@ -5,12 +5,7 @@ import parseBlock from './block';
 
 export default function parseFunction (tokens, anon = false) {
     Require.func(tokens.pop());
-    return {
-        type: 'Function',
-        name: parseName(tokens, anon),
-        parameters: parseParameters(tokens),
-        block: parseBlock(tokens)
-    }
+    return Function(tokens);
 }
 
 // TODO bound function
@@ -26,4 +21,13 @@ function parseName (tokens, anon) {
         return tokens.pop().value;
     }
     return null;
+}
+
+function Function (tokens, anon) {
+    return {
+        type: 'Function',
+        name: parseName(tokens, anon),
+        parameters: parseParameters(tokens),
+        body: parseBlock(tokens)
+    }
 }

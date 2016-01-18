@@ -1,11 +1,14 @@
 import * as Require from './require';
 
+import parseExpression from './expression';
 import parseCompound from './compound';
-import { parsePrimaryExpression } from './expression';
 
 export default function parseVariable (tokens) {
     Require.variable(tokens.peek());
-    let variable =  { type: tokens.pop().type };
+    let variable =  {
+        type: tokens.pop().type,
+        value: undefined
+    };
 
     Require.destructedOrIdentifier(tokens.peek());
 
@@ -15,7 +18,9 @@ export default function parseVariable (tokens) {
         variable.names = parseCompound(tokens);
     }
 
-    Require.assignment(tokens.pop());
-    variable.expression = parsePrimaryExpression(tokens);
+    if (Require.isAssignment(tokens.peek())) {
+        tokens.pop();
+        variable.value = parseExpression(tokens);
+    }
     return variable;
 }

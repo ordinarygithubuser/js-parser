@@ -1,18 +1,22 @@
 import * as Require from './require';
 
-import { parseSimpleExpression } from './expression';
+import parseExpression from './expression';
 
 export default function parseObject (tokens) {
-    let object = { type: 'Object', members: [] };
+    let members = [];
     let first = true;
 
     Require.objectStart(tokens.pop());
     while (!Require.isObjectEnd(tokens.peek())) {
-        object.members.push(parseKeyValue(tokens, first));
+        members.push(parseKeyValue(tokens, first));
         first = false;
     }
     Require.objectEnd(tokens.pop());
-    return object;
+
+    return {
+        type: 'Object',
+        members: members
+    };
 }
 
 function parseKeyValue (tokens, first) {
@@ -20,6 +24,6 @@ function parseKeyValue (tokens, first) {
     Require.identifier(tokens.peek());
     let key = tokens.pop().value;
     Require.keyValueAssignment(tokens.pop());
-    let value = parseSimpleExpression(tokens);
+    let value = parseExpression(tokens);
     return { key, value };
 }

@@ -16,6 +16,10 @@ export function isFunction (token = { type: null }) {
     return matches(token, Constants.KEYWORDS.function);
 }
 
+export function isAssignment (token = { type: null }) {
+    return matches(token, Constants.SYMBOL_TYPES.Assignment);
+}
+
 export function isCompoundStart (token = { type: null }) {
     return matches(token, Constants.SYMBOL_TYPES.SquareBracketOpen);
 }
@@ -28,6 +32,10 @@ export function isMethodCall (token = { type: null }) {
     return matches(token, Constants.SYMBOL_TYPES.RoundBracketOpen);
 }
 
+export function isScopeStart (token = { type: null }) {
+    return matches(token, Constants.SYMBOL_TYPES.SquareBracketOpen);
+}
+
 export function isScopeEnd (token = { type: null }) {
     return matches(token, Constants.SYMBOL_TYPES.SquareBracketClose);
 }
@@ -38,6 +46,10 @@ export function isLineEnd (token = { type: null }) {
 
 export function isEnumeration (token = { type: null }) {
     return matches(token, Constants.SYMBOL_TYPES.Comma);
+}
+
+export function isParameterEnd (token = { type: null }) {
+    return matches(token, Constants.SYMBOL_TYPES.RoundBracketClose);
 }
 
 export function isReturnStatement (token = { type: null }) {
@@ -82,6 +94,26 @@ export function isObjectStart (token = { type: null }) {
 
 export function isObjectEnd (token = { type: null }) {
     return matches(token, Constants.SYMBOL_TYPES.SquareBracketClose);
+}
+
+export function isArrayStart (token) {
+    return matches(token, Constants.SYMBOL_TYPES.EdgeBracketOpen);
+}
+
+export function isArrayEnd (token) {
+    return matches(token, Constants.SYMBOL_TYPES.EdgeBracketClose);
+}
+
+export function isNull (token = { type: null }) {
+    return matches(token, Constants.KEYWORDS.null);
+}
+
+export function isUndefined (token = { type: null }) {
+    return matches(token, Constants.KEYWORDS.undefined);
+}
+
+export function isNone (token) {
+    return isNull(token) || isUndefined(token);
 }
 
 /**
@@ -168,11 +200,19 @@ export function objectEnd (token) {
 }
 
 export function enumeration (token) {
-    ensure(token, Constants.SYMBOL_TYPES.Colon);
+    ensure(token, Constants.SYMBOL_TYPES.Comma);
 }
 
 export function keyValueAssignment (token) {
     ensure(token, Constants.SYMBOL_TYPES.Colon);
+}
+
+export function arrayStart (token) {
+    ensure(token, Constants.SYMBOL_TYPES.EdgeBracketOpen);
+}
+
+export function arrayEnd (token) {
+    ensure(token, Constants.SYMBOL_TYPES.EdgeBracketClose);
 }
 
 export function destructedOrIdentifier (token = { type: null }) {

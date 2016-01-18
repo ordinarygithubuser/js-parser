@@ -12,7 +12,7 @@ export default function parseTry (tokens) {
         tokens.pop();
         statement.catch = {
             parameters: parseParameters(tokens),
-            block: parseBlock(tokens)
+            body: parseBlock(tokens)
         };
     }
     return statement;

@@ -18,6 +18,7 @@ export const KEYWORDS = {
     'return': 'Return',
     'try': 'Try',
     'typeof': 'Typeof',
+    'undefined': 'Undefined',
     'var': 'Var',
     'while': 'While'
 };

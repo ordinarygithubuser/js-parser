@@ -1,33 +1,54 @@
 import * as Require from './require';
 
+import { parseArrayDefinition, parseArrayAccess } from './array';
+import parseAssignment from './assignment';
 import parseFunction from './function';
 import parseMethod from './method';
 import parseMember from './member';
 import parseObject from './object';
 
-export function parsePrimaryExpression (tokens) {
+export default function parseExpression (tokens) {
     let next = tokens.peek();
 
     // TODO binary expressions
-    if (Require.isIdentifier(next)) {
-        return parseSimpleExpression(tokens);
-    } else if (Require.isFunction(next)) {
+    if (Require.isFunction(next)) {
         return parseFunction(tokens);
     } else if (Require.isObjectStart(next)) {
         return parseObject(tokens);
+    } else if (Require.isArrayStart(next)) {
+        return parseArrayDefinition(tokens);
+    } else if (Require.isNone(next)) {
+        return parseNone(tokens);
     }
-    throw new Error(`Invalid Expression: ${next.type} ${next.value}`);
+    return parseSimpleExpression(tokens);
 }
 
-export function parseSimpleExpression (tokens) {
-    // TODO array access, assignment
-    if (Require.isMemberAccess(tokens.peek(1))) {
+function parseSimpleExpression (tokens) {
+    let  lookAhead = tokens.peek(1);
+
+    if (Require.isMemberAccess(lookAhead)) {
         return parseMember(tokens);
-    } else if (Require.isMethodCall(tokens.peek(1))) {
+    } else if (Require.isMethodCall(lookAhead)) {
         return parseMethod(tokens);
-    } else {
-        return convert(tokens.pop().value);
+    } else if (Require.isAssignment(lookAhead)) {
+        return parseAssignment(tokens);
+    } else if (Require.isArrayStart(lookAhead)) {
+        return parseArrayAccess(tokens);
     }
+    return convert(tokens.pop().value);
+}
+
+function parseNone (tokens) {
+    let token = tokens.pop();
+    let expression = {
+        type: token.type,
+        value: undefined
+    };
+
+    if (Require.isNull(token)) {
+        expression.value = null;
+    }
+    return expression;
 }
 
 function convert (val) {
@@ -43,7 +64,6 @@ function convert (val) {
         return type('Boolean', false);
     } else if (/^".*"$/.test(val) || /^'.*'$/.test(val)) {
         return type('String', val.substr(1, val.length - 2));
-    } else {
-        return { type: 'Reference', ref: val };
     }
+    return { type: 'Reference', ref: val };
 }

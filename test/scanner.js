@@ -3,14 +3,8 @@ import { scan } from '../src/scanner/scanner';
 
 let suite = Runner('Scanner');
 
-let letAssign = 'let a = 5;';
-
-let func = `function f (p1, p2) {
-    return Math.min(p1, p2);
-};`;
-
 suite.test('Let number assignment', test => {
-    let tokens = scan(letAssign).list();
+    let tokens = scan('let a = 5;').list();
 
     test.equals(tokens[0].type, 'Let');
     test.equals(tokens[0].line, 0);
@@ -33,7 +27,9 @@ suite.test('Let number assignment', test => {
 });
 
 suite.test('Function definition', test => {
-    let tokens = scan(func).list();
+    let tokens = scan(`function fUNC (p1, p2) {
+    return Math.min(p1, p2);
+};`).list();
 
     test.equals(tokens[0].type, 'Function');
     test.equals(tokens[0].line, 0);
@@ -45,11 +41,11 @@ suite.test('Function definition', test => {
 
     test.equals(tokens[2].type, 'RoundBracketOpen');
     test.equals(tokens[2].line, 0);
-    test.equals(tokens[2].pos, 11);
+    test.equals(tokens[2].pos, 14);
 
     test.equals(tokens[4].type, 'Comma');
     test.equals(tokens[4].line, 0);
-    test.equals(tokens[4].pos, 14);
+    test.equals(tokens[4].pos, 17);
 
     test.equals(tokens[8].type, 'Return');
     test.equals(tokens[8].line, 1);

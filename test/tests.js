@@ -8,4 +8,5 @@ let suites = [
 suites.map(suite => {
     suite.run();
     suite.log();
+    console.log();
 });

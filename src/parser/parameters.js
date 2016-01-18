@@ -9,9 +9,16 @@ export default function parseParameters (tokens) {
     // TODO: compound param
     parseList(tokens,
         ts => Require.isIdentifier(ts.peek()),
-        ts => params.push({ name: ts.pop().value })
+        ts => params.push(Parameter(ts.pop()))
     );
 
     Require.parameterEnd(tokens.pop());
     return params;
+}
+
+function Parameter (token) {
+    return {
+        type: 'Parameter',
+        name: token.value
+    };
 }

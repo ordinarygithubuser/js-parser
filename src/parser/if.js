@@ -1,6 +1,7 @@
 import * as Require from './require';
 
-import { parseSimpleExpression } from './expression';
+import parseExpression from './expression';
+import parseStatement from './statement';
 import parseBlock from './block';
 
 export default function parseIf (tokens) {
@@ -8,14 +9,18 @@ export default function parseIf (tokens) {
 
     Require.ifStatement(tokens.pop());
     Require.parameterStart(tokens.pop());
-    statement.condition = parseSimpleExpression(tokens);
+    statement.condition = parseExpression(tokens);
     Require.parameterEnd(tokens.pop());
-    statement.then = parseBlock(tokens);
+
+    if (Require.isScopeStart(tokens.peek())) {
+        statement.then = parseBlock(tokens);
+    } else {
+        statement.then = [ parseStatement(tokens) ];
+    }
 
     if (Require.isElseStatement(tokens.peek())) {
         tokens.pop();
         statement.else = parseBlock(tokens)
     }
-
     return statement;
 }

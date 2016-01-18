@@ -5,7 +5,7 @@ export function isKeyIdentPrefix (input) {
 }
 
 export function isKeyIdent (input) {
-    return /^\d|[a-z]|_|"|'$/.test(input);
+    return /^\d|[a-zA-Z]|_|"|'$/.test(input);
 }
 
 export function isWhitespace (input) {

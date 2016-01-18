@@ -11,8 +11,5 @@ export default function parseBlock (tokens) {
     }
     Require.scopeEnd(tokens.pop());
 
-    return {
-        type: 'Block',
-        statements: statements
-    };
+    return statements;
 }

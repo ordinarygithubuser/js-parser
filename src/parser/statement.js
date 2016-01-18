@@ -1,6 +1,6 @@
 import * as Require from './require';
 
-import { parsePrimaryExpression } from './expression';
+import parseExpression from './expression';
 import parseVariable from './variable';
 import parseReturn from './return';
 import parseWhile from './while';
@@ -22,6 +22,7 @@ export default function parseStatement (tokens) {
  *  new (Expression..?)
  *  switch
  *  for
+ *  class
  */
 function parse (tokens) {
     let next = tokens.peek();
@@ -41,5 +42,5 @@ function parse (tokens) {
     } else if (Require.isIfStatement(next)) {
         return parseIf(tokens);
     }
-    return parsePrimaryExpression(tokens);
+    return parseExpression(tokens);
 }

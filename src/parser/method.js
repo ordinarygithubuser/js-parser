@@ -1,20 +1,23 @@
 import * as Require from './require';
 
-import { parseSimpleExpression } from './expression';
+import parseExpression from './expression';
 import parseList from './list';
 
 export default function parseMethod (tokens) {
     let name = tokens.pop();
-    let method = { name, args: [], type: 'Method' };
+    let args = [];
 
     Require.identifier(name);
     Require.parameterStart(tokens.pop());
-
     parseList(tokens,
-        ts => Require.isIdentifier(ts.peek()),
-        ts => method.args.push({ expression: parseSimpleExpression(ts) })
+        ts => !Require.isParameterEnd(ts.peek()),
+        ts => args.push(parseExpression(ts))
     );
-
     Require.parameterEnd(tokens.pop());
-    return method;
+
+    return {
+        type: 'Method',
+        name: name.value,
+        arguments: args
+    };
 }

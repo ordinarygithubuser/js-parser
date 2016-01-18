@@ -1,6 +1,6 @@
 import * as Require from './require';
 
-import { parseSimpleExpression } from './expression';
+import parseExpression from './expression';
 
 export default function parseMember (tokens) {
     let next = tokens.pop();
@@ -8,6 +8,7 @@ export default function parseMember (tokens) {
 
     Require.identifier(next);
     Require.memberAccess(tokens.pop());
-    member.value = parseSimpleExpression(tokens);
+    // Todo: what can follow obj. ?
+    member.value = parseExpression(tokens);
     return member;
 }
