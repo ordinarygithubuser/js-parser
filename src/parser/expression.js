@@ -62,7 +62,7 @@ function convert (val) {
         return type('Boolean', true);
     } else if (val === 'false') {
         return type('Boolean', false);
-    } else if (/^".*"$/.test(val) || /^'.*'$/.test(val)) {
+    } else if (Require.isString(val)) {
         return type('String', val.substr(1, val.length - 2));
     }
     return { type: 'Reference', ref: val };

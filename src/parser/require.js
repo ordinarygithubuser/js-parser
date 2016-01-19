@@ -4,232 +4,109 @@ import * as Constants from '../common/constants';
  * Type checks, return true or false.
  */
 
-export function isIdentifier (token = { type: null }) {
-    return matches(token, Constants.IDENTIFIER);
-}
+export const isIdentifier = matches(Constants.IDENTIFIER);
+export const isVariable = matchesOf(Constants.VARIABLE_TYPES);
+export const isFunction = matches(Constants.KEYWORDS.function);
+export const isAssignment = matches(Constants.SYMBOL_TYPES.Assignment);
+export const isMethodCall = matches(Constants.SYMBOL_TYPES.RoundBracketOpen);
+export const isLineEnd = matches(Constants.SYMBOL_TYPES.Semicolon);
+export const isEnumeration = matches(Constants.SYMBOL_TYPES.Comma);
+export const isParameterEnd = matches(Constants.SYMBOL_TYPES.RoundBracketClose);
+export const isMemberAccess = matches(Constants.SYMBOL_TYPES.Point);
 
-export function isVariable (token = { type: null }) {
-    return Constants.VARIABLE_TYPES[token.type] !== undefined;
-}
+export const isCompoundStart = matches(Constants.SYMBOL_TYPES.SquareBracketOpen);
+export const isCompoundEnd = matches(Constants.SYMBOL_TYPES.SquareBracketClose);
 
-export function isFunction (token = { type: null }) {
-    return matches(token, Constants.KEYWORDS.function);
-}
+export const isScopeStart = matches(Constants.SYMBOL_TYPES.SquareBracketOpen);
+export const isScopeEnd = matches(Constants.SYMBOL_TYPES.SquareBracketClose);
 
-export function isAssignment (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.Assignment);
-}
+export const isReturnStatement = matches(Constants.KEYWORDS.return);
+export const isCatchStatement = matches(Constants.KEYWORDS.catch);
+export const isThrowStatement = matches(Constants.KEYWORDS.throw);
+export const isWhileStatement = matches(Constants.KEYWORDS.while);
+export const isElseStatement = matches(Constants.KEYWORDS.else);
+export const isForStatement = matches(Constants.KEYWORDS.for);
+export const isTryStatement = matches(Constants.KEYWORDS.try);
+export const isIfStatement = matches(Constants.KEYWORDS.if);
 
-export function isCompoundStart (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.SquareBracketOpen);
-}
+export const isObjectStart = matches(Constants.SYMBOL_TYPES.SquareBracketOpen);
+export const isObjectEnd = matches(Constants.SYMBOL_TYPES.SquareBracketClose);
 
-export function isCompoundEnd (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.SquareBracketClose);
-}
+export const isArrayStart = matches(Constants.SYMBOL_TYPES.EdgeBracketOpen);
+export const isArrayEnd = matches(Constants.SYMBOL_TYPES.EdgeBracketClose);
 
-export function isMethodCall (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.RoundBracketOpen);
-}
-
-export function isScopeStart (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.SquareBracketOpen);
-}
-
-export function isScopeEnd (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.SquareBracketClose);
-}
-
-export function isLineEnd (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.Semicolon);
-}
-
-export function isEnumeration (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.Comma);
-}
-
-export function isParameterEnd (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.RoundBracketClose);
-}
-
-export function isReturnStatement (token = { type: null }) {
-    return matches(token, Constants.KEYWORDS.return);
-}
-
-export function isMemberAccess (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.Point);
-}
-
-export function isTryStatement (token = { type: null }) {
-    return matches(token, Constants.KEYWORDS.try);
-}
-
-export function isCatchStatement (token = { type: null }) {
-    return matches(token, Constants.KEYWORDS.catch);
-}
-
-export function isThrowStatement (token = { type: null }) {
-    return matches(token, Constants.KEYWORDS.throw);
-}
-
-export function isIfStatement (token = { type: null }) {
-    return matches(token, Constants.KEYWORDS.if);
-}
-
-export function isElseStatement (token = { type: null }) {
-    return matches(token, Constants.KEYWORDS.else);
-}
-
-export function isWhileStatement (token = { type: null }) {
-    return matches(token ,Constants.KEYWORDS.while);
-}
-
-export function isForStatement (token = { type: null }) {
-    return matches(token, Constants.KEYWORDS.for);
-}
-
-export function isObjectStart (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.SquareBracketOpen);
-}
-
-export function isObjectEnd (token = { type: null }) {
-    return matches(token, Constants.SYMBOL_TYPES.SquareBracketClose);
-}
-
-export function isArrayStart (token) {
-    return matches(token, Constants.SYMBOL_TYPES.EdgeBracketOpen);
-}
-
-export function isArrayEnd (token) {
-    return matches(token, Constants.SYMBOL_TYPES.EdgeBracketClose);
-}
-
-export function isNull (token = { type: null }) {
-    return matches(token, Constants.KEYWORDS.null);
-}
-
-export function isUndefined (token = { type: null }) {
-    return matches(token, Constants.KEYWORDS.undefined);
-}
+export const isNull = matches(Constants.KEYWORDS.null);
+export const isUndefined = matches(Constants.KEYWORDS.undefined);
 
 export function isNone (token) {
     return isNull(token) || isUndefined(token);
 }
 
+export function isString (value) {
+    return /^".*"$/.test(value) || /^'.*'$/.test(value);
+}
+
 /**
  * Helper too match a <token.type> against a <type>.
  */
-function matches (token = { type: null }, type) {
-    return token.type === type;
+function matches (type) {
+    return function (token = { type: null }) {
+        return token.type === type;
+    }
+}
+
+function matchesOf (types) {
+    return function (token = { type: null }) {
+        return types[token.type] !== undefined;
+    }
 }
 
 /**
  * Require calls, throw an error if the conditions aren't met.
  */
 
-export function identifier (token) {
-    ensure(token, Constants.IDENTIFIER);
-}
+export const identifier = ensure(Constants.IDENTIFIER, 'Identifier');
+export const variable = ensureOf(Constants.VARIABLE_TYPES, 'Variable');
+export const func =  ensure(Constants.KEYWORDS.function, 'Function');
+export const assignment = ensure(Constants.SYMBOL_TYPES.Assignment, 'Assignment');
+export const compoundStart = ensure(Constants.DESTRUCTED, 'Compound Start');
+export const memberAccess = ensure(Constants.SYMBOL_TYPES.Point, 'Member Access');
+export const enumeration = ensure(Constants.SYMBOL_TYPES.Comma, 'Enumeration');
+export const keyValueAssignment = ensure(Constants.SYMBOL_TYPES.Colon, 'Key-Value Assignment');
 
-export function variable (token) {
-    ensureOf(token, Constants.VARIABLE_TYPES);
-}
+export const arrayStart = ensure(Constants.SYMBOL_TYPES.EdgeBracketOpen, 'Array Start');
+export const arrayEnd = ensure(Constants.SYMBOL_TYPES.EdgeBracketClose, 'Array End');
 
-export function func (token ) {
-    ensure(token, Constants.KEYWORDS.function);
-}
+export const scopeStart = ensure(Constants.SYMBOL_TYPES.SquareBracketOpen, 'Scope Start');
+export const scopeEnd = ensure(Constants.SYMBOL_TYPES.SquareBracketClose, 'Scope End');
 
-export function assignment (token) {
-    ensure(token, Constants.SYMBOL_TYPES.Assignment);
-}
+export const parameterStart = ensure(Constants.SYMBOL_TYPES.RoundBracketOpen, 'Parameter Start');
+export const parameterEnd = ensure(Constants.SYMBOL_TYPES.RoundBracketClose, 'Parameter End');
 
-export function scopeStart (token) {
-    ensure(token, Constants.SYMBOL_TYPES.SquareBracketOpen);
-}
+export const objectStart = ensure(Constants.SYMBOL_TYPES.SquareBracketOpen, 'Object Start');
+export const objectEnd = ensure(Constants.SYMBOL_TYPES.SquareBracketClose, 'Object End');
 
-export function scopeEnd (token) {
-    ensure(token, Constants.SYMBOL_TYPES.SquareBracketClose);
-}
-
-export function compoundStart (token) {
-    ensure(token, Constants.DESTRUCTED);
-}
-
-export function parameterStart (token) {
-    ensure(token,  Constants.SYMBOL_TYPES.RoundBracketOpen);
-}
-
-export function parameterEnd (token) {
-    ensure(token, Constants.SYMBOL_TYPES.RoundBracketClose);
-}
-
-export function memberAccess (token) {
-    ensure(token, Constants.SYMBOL_TYPES.Point);
-}
-
-export function returnStatement (token) {
-    ensure(token, Constants.KEYWORDS.return);
-}
-
-export function tryStatement (token) {
-    ensure(token, Constants.KEYWORDS.try);
-}
-
-export function throwStatement (token) {
-    ensure(token, Constants.KEYWORDS.throw);
-}
-
-export function ifStatement (token) {
-    ensure(token, Constants.KEYWORDS.if);
-}
-
-export function whileStatement (token) {
-    ensure(token, Constants.KEYWORDS.while);
-}
-
-export function forStatement (token) {
-    ensure(token, Constants.KEYWORDS.for);
-}
-
-export function objectStart (token) {
-    ensure(token, Constants.SYMBOL_TYPES.SquareBracketOpen);
-}
-
-export function objectEnd (token) {
-    ensure(token, Constants.SYMBOL_TYPES.SquareBracketClose);
-}
-
-export function enumeration (token) {
-    ensure(token, Constants.SYMBOL_TYPES.Comma);
-}
-
-export function keyValueAssignment (token) {
-    ensure(token, Constants.SYMBOL_TYPES.Colon);
-}
-
-export function arrayStart (token) {
-    ensure(token, Constants.SYMBOL_TYPES.EdgeBracketOpen);
-}
-
-export function arrayEnd (token) {
-    ensure(token, Constants.SYMBOL_TYPES.EdgeBracketClose);
-}
-
-export function destructedOrIdentifier (token = { type: null }) {
-    if (!isIdentifier(token) && !isCompoundStart(token)) {
-        throw new ParserError(token, Constants.DESTRUCTED, Constants.IDENTIFIER);
-    }
-}
+export const importStatement = ensure(Constants.KEYWORDS.import, 'Import Statement');
+export const returnStatement = ensure(Constants.KEYWORDS.return, 'Return Statement');
+export const throwStatement = ensure(Constants.KEYWORDS.throw, 'Throw Statement');
+export const whileStatement = ensure(Constants.KEYWORDS.while, 'While Statement');
+export const forStatement = ensure(Constants.KEYWORDS.for, 'For Statement');
+export const tryStatement = ensure(Constants.KEYWORDS.try, 'Try Statement');
+export const ifStatement = ensure(Constants.KEYWORDS.if, 'If Statement');
 
 /**
  * Helper function to throw an error of <type> and <token.type> do not match.
  */
-function ensure (token = { type: null }, type) {
-    if (type !== token.type) throw new ParserError(token, type);
+function ensure (type, expected) {
+    return function (token = { type: null }) {
+        if (type !== token.type) throw new ParserError(token, expected);
+    }
 }
 
-function ensureOf (token = { type: null }, types) {
-    if (![types[token.type]]) throw new ParserError(token, type);
+function ensureOf (types, expected) {
+    return function (token = { type: null }) {
+        if (![types[token.type]]) throw new ParserError(token, expected);
+    }
 }
 
 /**

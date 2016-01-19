@@ -10,11 +10,10 @@ export default function parseVariable (tokens) {
         value: undefined
     };
 
-    Require.destructedOrIdentifier(tokens.peek());
-
     if (Require.isIdentifier(tokens.peek())) {
         variable.name = tokens.pop().value;
     } else {
+        Require.isCompoundStart(tokens.peek());
         variable.names = parseCompound(tokens);
     }
 
