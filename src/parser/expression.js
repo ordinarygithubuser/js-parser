@@ -35,7 +35,7 @@ function parseSimpleExpression (tokens) {
     } else if (Require.isArrayStart(lookAhead)) {
         return parseArrayAccess(tokens);
     }
-    return convert(tokens.pop().value);
+    return convert(tokens.pop());
 }
 
 function parseNone (tokens) {
@@ -51,7 +51,9 @@ function parseNone (tokens) {
     return expression;
 }
 
-function convert (val) {
+function convert (token) {
+    let val = token.value;
+
     function type (type, value) {
         return { type, value };
     }
@@ -62,8 +64,8 @@ function convert (val) {
         return type('Boolean', true);
     } else if (val === 'false') {
         return type('Boolean', false);
-    } else if (Require.isString(val)) {
-        return type('String', val.substr(1, val.length - 2));
+    } else if (Require.isString(token)) {
+        return type('String', val);
     }
     return { type: 'Reference', ref: val };
 }

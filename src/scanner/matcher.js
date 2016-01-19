@@ -1,11 +1,15 @@
 import * as Constants from '../common/constants';
 
 export function isKeyIdentPrefix (input) {
-    return /^\d|[a-zA-Z]|_|"|'$/.test(input);
+    return /^\d|[a-zA-Z]|_$/.test(input);
 }
 
 export function isKeyIdent (input) {
-    return /^\d|[a-zA-Z]|_|"|'$/.test(input);
+    return /^\d|[a-zA-Z]|_$/.test(input);
+}
+
+export function isString (input) {
+    return /^'|"$/.test(input);
 }
 
 export function isWhitespace (input) {
@@ -18,6 +22,14 @@ export function isSymbol (input) {
 
 export function isOperator (input) {
     return Constants.OPERATORS[input] !== undefined;
+}
+
+export function isStringEnd (input) {
+    return input == '"'; // TODO other string variants
+}
+
+export function isAnyButStringEnd (input) {
+    return input != '"';
 }
 
 export function isInvalid (input) {

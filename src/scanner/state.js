@@ -93,3 +93,12 @@ export class Whitespace extends MultiChar {
         }
     }
 }
+
+export class String extends MultiChar {
+    finish (stream) {
+        let value = this.value.substr(1, this.value.length);
+        this.add(stream, value, 'String');
+    }
+}
+
+export class StringEnd extends State {}

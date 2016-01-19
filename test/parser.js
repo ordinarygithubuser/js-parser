@@ -91,7 +91,6 @@ suite.test('Function / Method / Return / Array', test => {
     }`));
 
     let f = statements[0]
-    console.log(f, errors);
     test.equals(f.body[0].type, 'Let');
     test.equals(f.body[0].name, 'max');
     test.equals(f.body[0].value.type, 'Member');
@@ -173,6 +172,20 @@ suite.test('Try Catch', test => {
     test.equals(first.catch.body[0].ref, 'console');
     test.equals(first.catch.body[0].value.type, 'Method');
     test.equals(first.catch.body[0].value.name, 'log');
+});
+
+suite.test('Import Default / Compound', test => {
+    let { statements } = parse(scan(`
+        import One, { Two, three } from "./file";`
+    ));
+    let imp = statements[0];
+
+    test.equals(imp.type, 'Import');
+    test.equals(imp.main, 'One');
+    test.equals(imp.file, './file');
+    test.equals(imp.list.length, 2);
+    test.equals(imp.list[0].type, 'Reference');
+    test.equals(imp.list[1].type, 'Reference');
 });
 
 export default suite;

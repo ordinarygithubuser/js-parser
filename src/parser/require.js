@@ -5,6 +5,7 @@ import * as Constants from '../common/constants';
  */
 
 export const isIdentifier = matches(Constants.IDENTIFIER);
+export const isString = matches(Constants.STRING);
 export const isVariable = matchesOf(Constants.VARIABLE_TYPES);
 export const isFunction = matches(Constants.KEYWORDS.function);
 export const isAssignment = matches(Constants.SYMBOL_TYPES.Assignment);
@@ -46,10 +47,6 @@ export const isUndefined = matches(Constants.KEYWORDS.undefined);
 
 export function isNone (token) {
     return isNull(token) || isUndefined(token);
-}
-
-export function isString (value) {
-    return /^".*"$/.test(value) || /^'.*'$/.test(value);
 }
 
 /**

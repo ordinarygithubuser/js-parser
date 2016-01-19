@@ -52,4 +52,11 @@ suite.test('Function definition', test => {
     test.equals(tokens[8].pos, 4);
 });
 
+suite.test('String', test => {
+    let tokens = scan('".str/"').list();
+
+    test.equals(tokens[0].type, 'String');
+    test.equals(tokens[0].value, '.str/');
+});
+
 export default suite;

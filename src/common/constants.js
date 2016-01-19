@@ -79,5 +79,4 @@ export const NOISE = {
 };
 
 export const IDENTIFIER = 'Identifier';
-export const DESTRUCTED = 'Destructed';
-export const VARIABLE = 'Variable';
+export const STRING = 'String';
