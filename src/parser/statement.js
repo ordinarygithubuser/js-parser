@@ -4,6 +4,7 @@ import parseExpression from './expression';
 import parseVariable from './variable';
 import parseReturn from './return';
 import parseImport from './import';
+import parseExport from './export';
 import parseWhile from './while';
 import parseThrow from './throw';
 import parseTry from './try';
@@ -34,6 +35,8 @@ function parse (tokens) {
         return parseVariable(tokens);
     } else if (Require.isImportStatement(next)) {
         return parseImport(tokens);
+    } else if (Require.isExportStatement(next)) {
+        return parseExport(tokens);
     } else if (Require.isReturnStatement(next)) {
         return parseReturn(tokens);
     } else if (Require.isWhileStatement(next)) {
@@ -45,5 +48,5 @@ function parse (tokens) {
     } else if (Require.isIfStatement(next)) {
         return parseIf(tokens);
     }
-    return parseExpression(tokens);
+    return parseExpression(tokens, false);
 }

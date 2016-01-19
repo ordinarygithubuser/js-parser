@@ -6,19 +6,22 @@ import parseFunction from './function';
 import parseMethod from './method';
 import parseMember from './member';
 import parseObject from './object';
+import parseClass from './class';
 
-export default function parseExpression (tokens) {
+export default function parseExpression (tokens, anon = true) {
     let next = tokens.peek();
 
     // TODO binary expressions
     if (Require.isFunction(next)) {
-        return parseFunction(tokens);
+        return parseFunction(tokens, anon);
     } else if (Require.isObjectStart(next)) {
         return parseObject(tokens);
     } else if (Require.isArrayStart(next)) {
         return parseArrayDefinition(tokens);
     } else if (Require.isNone(next)) {
         return parseNone(tokens);
+    } else if (Require.isClass(next)) {
+        return parseClass(tokens);
     }
     return parseSimpleExpression(tokens);
 }

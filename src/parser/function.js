@@ -5,7 +5,7 @@ import parseBlock from './block';
 
 export default function parseFunction (tokens, anon = false) {
     Require.func(tokens.pop());
-    return Function(tokens);
+    return Function(tokens, anon);
 }
 
 // TODO bound function

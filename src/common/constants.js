@@ -5,6 +5,7 @@ export const KEYWORDS = {
     'const': 'Const',
     'default': 'Default',
     'else': 'Else',
+    'extends': 'Extends',
     'export': 'Export',
     'for': 'For',
     'from': 'From',

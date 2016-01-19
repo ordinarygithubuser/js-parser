@@ -174,7 +174,7 @@ suite.test('Try Catch', test => {
     test.equals(first.catch.body[0].value.name, 'log');
 });
 
-suite.test('Import Default / Compound', test => {
+suite.test('Import Default / Import Compound', test => {
     let { statements } = parse(scan(`
         import One, { Two, three } from "./file";`
     ));
@@ -186,6 +186,41 @@ suite.test('Import Default / Compound', test => {
     test.equals(imp.list.length, 2);
     test.equals(imp.list[0].type, 'Reference');
     test.equals(imp.list[1].type, 'Reference');
+});
+
+
+suite.test('Export Default / Export Non-Default', test => {
+    let { statements } = parse(scan(`
+        export default const B = "@?.-!";
+        export function noop () {};
+    `));
+
+    let ex1 = statements[0];
+    test.equals(ex1.type, 'Export');
+    test.equals(ex1.isDefault, true);
+    test.equals(ex1.value.type, 'Const');
+    test.equals(ex1.value.name, 'B');
+
+    let ex2 = statements[1];
+    test.equals(ex2.type, 'Export');
+    test.equals(ex2.isDefault, false);
+    test.equals(ex2.value.type, 'Function');
+    test.equals(ex2.value.name, 'noop');
+    test.equals(ex2.value.body, []);
+    test.equals(ex2.value.parameters, []);
+});
+
+suite.test('Empty Class Definition / Extension', test => {
+    let { statements } = parse(scan(`
+        class MyClass extends function () {} {};
+    `));
+
+    let clazz = statements[0];
+    test.equals(clazz.type, 'Class');
+    test.equals(clazz.name, 'MyClass');
+    test.equals(clazz.base.type, 'Function');
+    test.equals(clazz.base.name, null);
+    test.equals(clazz.body, []);
 });
 
 export default suite;

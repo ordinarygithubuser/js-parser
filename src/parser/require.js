@@ -14,6 +14,9 @@ export const isLineEnd = matches(Constants.SYMBOL_TYPES.Semicolon);
 export const isEnumeration = matches(Constants.SYMBOL_TYPES.Comma);
 export const isMemberAccess = matches(Constants.SYMBOL_TYPES.Point);
 export const isKeyValueAssignment = matches(Constants.SYMBOL_TYPES.Colon);
+export const isDefaultStatement = matches(Constants.KEYWORDS.default);
+export const isClass = matches(Constants.KEYWORDS.class);
+export const isExtension = matches(Constants.KEYWORDS.extends);
 
 export const isCompoundStart = matches(Constants.SYMBOL_TYPES.SquareBracketOpen);
 export const isCompoundEnd = matches(Constants.SYMBOL_TYPES.SquareBracketClose);
@@ -75,7 +78,7 @@ export const assignment = ensure(isAssignment, 'Assignment');
 export const memberAccess = ensure(isMemberAccess, 'Member Access');
 export const enumeration = ensure(isEnumeration, 'Enumeration');
 export const keyValueAssignment = ensure(isKeyValueAssignment, 'Key-Value Assignment');
-
+export const classDefinition = ensure(isClass, 'Class Definition');
 export const arrayStart = ensure(isArrayStart, 'Array Start');
 export const arrayEnd = ensure(isArrayEnd, 'Array End');
 
@@ -93,7 +96,7 @@ export const objectEnd = ensure(isObjectEnd, 'Object End');
 
 export const returnStatement = ensure(isReturnStatement, 'Return Statement');
 export const importStatement = ensure(isImportStatement, 'Import Statement');
-export const exportStatement = ensure(isExportStatement, 'Import Statement');
+export const exportStatement = ensure(isExportStatement, 'Export Statement');
 export const throwStatement = ensure(isThrowStatement, 'Throw Statement');
 export const whileStatement = ensure(isWhileStatement, 'While Statement');
 export const fromStatement = ensure(isFromStatement, 'From Statement');
