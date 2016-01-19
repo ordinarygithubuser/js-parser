@@ -21,10 +21,8 @@ export default function parseStatement (tokens) {
 
 /**
  * TODO
- *  new (Expression..?)
  *  switch
  *  for
- *  class
  */
 function parse (tokens) {
     let next = tokens.peek();

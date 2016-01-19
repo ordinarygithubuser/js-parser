@@ -11,7 +11,7 @@ import parseClass from './class';
 export default function parseExpression (tokens, anon = true) {
     let next = tokens.peek();
 
-    // TODO binary expressions
+    // TODO binary expressions, new
     if (Require.isFunction(next)) {
         return parseFunction(tokens, anon);
     } else if (Require.isObjectStart(next)) {
