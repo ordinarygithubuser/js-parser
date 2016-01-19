@@ -90,7 +90,8 @@ suite.test('Function / Method / Return / Array', test => {
         return [ max, max, max ];
     }`));
 
-    let f = statements[0];
+    let f = statements[0]
+    console.log(f, errors);
     test.equals(f.body[0].type, 'Let');
     test.equals(f.body[0].name, 'max');
     test.equals(f.body[0].value.type, 'Member');
