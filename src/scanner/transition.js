@@ -9,7 +9,7 @@
  */
 export default function Transition (type, matcher, State) {
     function matches (state, input) {
-        return state.matches(type) && matcher(input);
+        return state.matches(type) && matcher(input, state);
     }
 
     function getNext (state, input) {

@@ -58,10 +58,11 @@ let transitions = [
     Transition(States.KeywordIdentifier, Matcher.isString, States.String),
     Transition(States.KeywordIdentifier, Matcher.isKeyIdent),
 
-    Transition(States.Operator, Matcher.isKeyIdentPrefix, States.Whitespace),
-    Transition(States.Operator, Matcher.isWhitespace, States.Operator),
+    Transition(States.Operator, Matcher.isKeyIdentPrefix, States.KeywordIdentifier),
+    Transition(States.Operator, Matcher.isWhitespace, States.Whitespace),
     Transition(States.Operator, Matcher.isString, States.String),
     Transition(States.Operator, Matcher.isSymbol, States.Symbol),
+    Transition(States.Operator, Matcher.isOperator),
 
     Transition(States.StringEnd, Matcher.isKeyIdentPrefix, States.KeywordIdentifier),
     Transition(States.StringEnd, Matcher.isWhitespace, States.Whitespace),

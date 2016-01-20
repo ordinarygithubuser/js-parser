@@ -1,4 +1,5 @@
 export const KEYWORDS = {
+    'as': 'As',
     'case': 'Case',
     'catch': 'Catch',
     'class': 'Class',
@@ -18,6 +19,7 @@ export const KEYWORDS = {
     'null': 'Null',
     'return': 'Return',
     'try': 'Try',
+    'this': 'this',
     'typeof': 'Typeof',
     'throw': 'Throw',
     'undefined': 'Undefined',
@@ -63,14 +65,29 @@ export const SYMBOL_TYPES = {
 };
 
 export const OPERATORS = {
-    '+': 'Plus',
-    '-': 'Minus',
-    '*': 'Multiply',
-    '/': 'Divide',
+    '+': 'Addition',
+    '-': 'Subtraction',
+    '*': 'Multiplication',
+    '/': 'Division',
+    '&': 'BinaryAnd',
+    '|': 'BinaryOr',
     '&&': 'And',
     '||': 'Or',
-    '%': 'Module',
+    '%': 'Modulo',
     '?': 'Ternary'
+};
+
+export const OPERATOR_TYPES = {
+    Addition: 'Addition',
+    Subtraction: 'Subtraction',
+    Multiplication: 'Multiplication',
+    Division: 'Division',
+    And: 'And',
+    Or: 'Or',
+    BinaryAnd: 'BinaryAnd',
+    BinaryOr: 'BinaryOr',
+    Module: 'Module',
+    Ternary: 'Ternary'
 };
 
 export const NOISE = {

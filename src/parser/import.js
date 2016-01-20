@@ -6,6 +6,7 @@ export default function parseImport (tokens) {
     let imp = {
         type: 'Import',
         main: null,
+        alias: null,
         list: [],
         file: null
     };
@@ -20,6 +21,15 @@ export default function parseImport (tokens) {
         }
     } else if (Require.isScopeStart(tokens.peek())) {
         imp.list = parseImportList(tokens);
+    } else if (Require.isAsterisk(tokens.peek())) {
+        tokens.pop();
+        if(Require.isAs(tokens.peek())) {
+            tokens.pop();
+            Require.isIdentifier(tokens.peek());
+            imp.alias = tokens.pop().value;
+        } else {
+            imp.list = [ '*' ];
+        }
     }
     imp.file = parseFrom(tokens);
     return imp;

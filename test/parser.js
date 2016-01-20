@@ -41,7 +41,9 @@ suite.test('Var / Assignment / Boolean', test => {
 });
 
 suite.test('Return / Object', test => {
-    let { statements } = parse(scan('return { name: "test", type: false };'));
+    let { statements } = parse(scan(`
+        return { name: "test", type: false };
+    `));
 
     let first = statements[0];
     test.equals(first.type, 'Return');
@@ -58,9 +60,11 @@ suite.test('Return / Object', test => {
 });
 
 suite.test('Function / Parameters', test => {
-    let { statements } = parse(scan(`function f (p1, p2) {}`));
-    let f = statements[0];
+    let { statements } = parse(scan(`
+        function f (p1, p2) {}
+    `));
 
+    let f = statements[0];
     test.equals(f.type, 'Function');
     test.equals(f.name, 'f');
     test.equals(f.parameters[0].name, 'p1');
@@ -85,10 +89,12 @@ suite.test('Member / Method / Arguments', test => {
 });
 
 suite.test('Function / Method / Return / Array', test => {
-    let { statements } = parse(scan(`function f (p1, p2) {
-        let max = Math.min(p1, p2);
-        return [ max, max, max ];
-    }`));
+    let { statements } = parse(scan(`
+        function f (p1, p2) {
+            let max = Math.min(p1, p2);
+            return [ max, max, max ];
+        }
+    `));
 
     let f = statements[0];
     test.equals(f.body[0].type, 'Let');
@@ -104,7 +110,11 @@ suite.test('Function / Method / Return / Array', test => {
 
 suite.test('If-Else / Block / Undefined / Null', test => {
     let { statements } = parse(scan(`
-        if (cond()) { a = { test: null }; } else { return undefined; }
+        if (cond()) {
+            a = { test: null };
+        } else {
+            return undefined;
+        }
     `));
 
     let cond = statements[0];
@@ -117,10 +127,10 @@ suite.test('If-Else / Block / Undefined / Null', test => {
     test.equals(cond.then[0].ref.members.length, 1);
     test.equals(cond.then[0].ref.members[0].key, 'test');
     test.equals(cond.then[0].ref.members[0].value.type, 'Null');
-    test.isNull(cond.then[0].ref.members[0].value.value);
+    test.equals(cond.then[0].ref.members[0].value.value, null);
     test.equals(cond.else[0].type, 'Return');
     test.equals(cond.else[0].value.type, 'Undefined');
-    test.isUndefined(cond.else[0].value.value);
+    test.equals(cond.else[0].value.value, undefined);
 });
 
 suite.test('While / If without braces', test => {
@@ -149,7 +159,7 @@ suite.test('While / If without braces', test => {
     test.equals(loop.body[0].then[0].type, 'Return');
     test.equals(loop.body[0].then[0].value.type, 'Method');
     test.equals(loop.body[0].then[0].value.name, 'a');
-    test.isUndefined(loop.body[0].else);
+    test.equals(loop.body[0].else, undefined);
 });
 
 suite.test('Try Catch', test => {
@@ -183,11 +193,24 @@ suite.test('Import Default / Import Compound', test => {
     test.equals(imp.type, 'Import');
     test.equals(imp.main, 'One');
     test.equals(imp.file, './file');
+    test.equals(imp.alias, null);
     test.equals(imp.list.length, 2);
     test.equals(imp.list[0].type, 'Reference');
     test.equals(imp.list[1].type, 'Reference');
 });
 
+suite.test('Import all under an alias', test => {
+    let { statements } = parse(scan(`
+        import * as MyAlias from "./source";
+    `));
+    let imp = statements[0];
+
+    test.equals(imp.type, 'Import');
+    test.equals(imp.main, null);
+    test.equals(imp.file, './source');
+    test.equals(imp.alias, 'MyAlias');
+    test.equals(imp.list, []);
+});
 
 suite.test('Export Default / Export Non-Default', test => {
     let { statements } = parse(scan(`
@@ -221,6 +244,25 @@ suite.test('Empty Class Definition / Extension', test => {
     test.equals(clazz.base.type, 'Function');
     test.equals(clazz.base.name, null);
     test.equals(clazz.body, []);
+});
+
+suite.test('Binary AND and OR Expression', test => {
+    let { statements } = parse(scan(`
+        return testP(p) && x || true;
+    `));
+
+    let ret = statements[0];
+    test.equals(ret.type, 'Return');
+    test.equals(ret.value.type, 'AndExpression');
+    test.equals(ret.value.left.type, 'Method');
+    test.equals(ret.value.left.name, 'testP');
+    test.equals(ret.value.right.type, 'OrExpression');
+
+    let { left, right } = ret.value.right;
+    test.equals(left.type, 'Reference');
+    test.equals(left.ref, 'x');
+    test.equals(right.type, 'Boolean');
+    test.equals(right.value, true);
 });
 
 export default suite;

@@ -20,8 +20,9 @@ export function isSymbol (input) {
     return Constants.SYMBOLS[input] !== undefined;
 }
 
-export function isOperator (input) {
-    return Constants.OPERATORS[input] !== undefined;
+export function isOperator (input, state) {
+    return Constants.OPERATORS[input] !== undefined ||
+        Constants.OPERATORS[input + state.value] !== undefined;
 }
 
 export function isStringEnd (input) {

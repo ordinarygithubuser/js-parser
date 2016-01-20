@@ -7,6 +7,7 @@ import * as Constants from '../common/constants';
 export const isIdentifier = matches(Constants.IDENTIFIER);
 export const isString = matches(Constants.STRING);
 export const isVariable = matchesOf(Constants.VARIABLE_TYPES);
+export const isBinary = matchesOf(Constants.OPERATOR_TYPES);
 export const isFunction = matches(Constants.KEYWORDS.function);
 export const isAssignment = matches(Constants.SYMBOL_TYPES.Assignment);
 export const isMethodCall = matches(Constants.SYMBOL_TYPES.RoundBracketOpen);
@@ -17,6 +18,8 @@ export const isKeyValueAssignment = matches(Constants.SYMBOL_TYPES.Colon);
 export const isDefaultStatement = matches(Constants.KEYWORDS.default);
 export const isClass = matches(Constants.KEYWORDS.class);
 export const isExtension = matches(Constants.KEYWORDS.extends);
+export const isAsterisk = matches(Constants.OPERATOR_TYPES.Multiplication);
+export const isAs = matches(Constants.KEYWORDS.as);
 
 export const isCompoundStart = matches(Constants.SYMBOL_TYPES.SquareBracketOpen);
 export const isCompoundEnd = matches(Constants.SYMBOL_TYPES.SquareBracketClose);
@@ -32,6 +35,13 @@ export const isObjectEnd = matches(Constants.SYMBOL_TYPES.SquareBracketClose);
 
 export const isArrayStart = matches(Constants.SYMBOL_TYPES.EdgeBracketOpen);
 export const isArrayEnd = matches(Constants.SYMBOL_TYPES.EdgeBracketClose);
+
+export const isAddition = matches(Constants.OPERATOR_TYPES.Addition);
+export const isSubtraction = matches(Constants.OPERATOR_TYPES.Subtraction);
+export const isMultiplication = matches(Constants.OPERATOR_TYPES.Multiplication);
+export const isDivision = matches(Constants.OPERATOR_TYPES.Division);
+export const isAnd = matches(Constants.OPERATOR_TYPES.And);
+export const isOr= matches(Constants.OPERATOR_TYPES.Or);
 
 export const isReturnStatement = matches(Constants.KEYWORDS.return);
 export const isImportStatement = matches(Constants.KEYWORDS.import);
@@ -81,7 +91,7 @@ export const keyValueAssignment = ensure(isKeyValueAssignment, 'Key-Value Assign
 export const classDefinition = ensure(isClass, 'Class Definition');
 export const arrayStart = ensure(isArrayStart, 'Array Start');
 export const arrayEnd = ensure(isArrayEnd, 'Array End');
-
+export const binaryExpression = ensure(isBinary, 'Binary Expression');
 export const compoundStart = ensure(isCompoundStart, 'Compound Start');
 export const compoundEnd = ensure(isCompoundEnd, 'Compound End');
 

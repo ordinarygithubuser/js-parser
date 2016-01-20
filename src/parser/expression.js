@@ -10,20 +10,27 @@ import parseClass from './class';
 
 export default function parseExpression (tokens, anon = true) {
     let next = tokens.peek();
+    let expr = null;
 
-    // TODO binary expressions, new
+    // TODO binary expressions, new, !
     if (Require.isFunction(next)) {
-        return parseFunction(tokens, anon);
+        expr = parseFunction(tokens, anon);
     } else if (Require.isObjectStart(next)) {
-        return parseObject(tokens);
+        expr = parseObject(tokens);
     } else if (Require.isArrayStart(next)) {
-        return parseArrayDefinition(tokens);
+        expr = parseArrayDefinition(tokens);
     } else if (Require.isNone(next)) {
-        return parseNone(tokens);
+        expr = parseNone(tokens);
     } else if (Require.isClass(next)) {
-        return parseClass(tokens);
+        expr = parseClass(tokens);
+    } else {
+        expr = parseSimpleExpression(tokens);
     }
-    return parseSimpleExpression(tokens);
+
+    if (Require.isBinary(tokens.peek())) {
+        return parseBinaryExpression(tokens, expr);
+    }
+    return expr;
 }
 
 function parseSimpleExpression (tokens) {
@@ -39,6 +46,30 @@ function parseSimpleExpression (tokens) {
         return parseArrayAccess(tokens);
     }
     return convert(tokens.pop());
+}
+
+function parseBinaryExpression (tokens, left) {
+    let next = tokens.pop();
+    Require.binaryExpression(next);
+
+    function binExpr (type, right) {
+        return { type, left, right }
+    }
+
+    // TODO &<, >, ==,  %
+    if (Require.isAddition(next)) {
+        return binExpr('AdditionExpression', parseExpression(tokens));
+    } else if (Require.isSubtraction(next)) {
+        return binExpr('SubtractionExpression', parseExpression(tokens));
+    } else if (Require.isMultiplication(next)) {
+        return binExpr('MultiplicationExpression', parseExpression(tokens));
+    } else if (Require.isDivision(next)) {
+        return binExpr('DivisionExpression', parseExpression(tokens));
+    }else if (Require.isAnd(next)) {
+        return binExpr('AndExpression', parseExpression(tokens));
+    } else if (Require.isOr(next)) {
+        return binExpr('OrExpression', parseExpression(tokens));
+    }
 }
 
 function parseNone (tokens) {
