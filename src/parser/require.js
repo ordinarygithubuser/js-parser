@@ -1,8 +1,16 @@
 import * as Constants from '../common/constants';
 
-/**
- * Type checks, return true or false.
- */
+const matches = type => (token = { type: null }) => {
+    return token.type === type;
+};
+
+const matchesOf = types => (token = { type: null }) => {
+    return types[token.type] !== undefined;
+};
+
+const ensure = (matcher, expected) => (token = { type: null }) => {
+    if (!matcher(token)) throw new ParserError(token, expected);
+};
 
 export const isIdentifier = matches(Constants.IDENTIFIER);
 export const isString = matches(Constants.STRING);
@@ -41,7 +49,7 @@ export const isSubtraction = matches(Constants.OPERATOR_TYPES.Subtraction);
 export const isMultiplication = matches(Constants.OPERATOR_TYPES.Multiplication);
 export const isDivision = matches(Constants.OPERATOR_TYPES.Division);
 export const isAnd = matches(Constants.OPERATOR_TYPES.And);
-export const isOr= matches(Constants.OPERATOR_TYPES.Or);
+export const isOr = matches(Constants.OPERATOR_TYPES.Or);
 
 export const isReturnStatement = matches(Constants.KEYWORDS.return);
 export const isImportStatement = matches(Constants.KEYWORDS.import);
@@ -58,28 +66,8 @@ export const isIfStatement = matches(Constants.KEYWORDS.if);
 export const isNull = matches(Constants.KEYWORDS.null);
 export const isUndefined = matches(Constants.KEYWORDS.undefined);
 
-export function isNone (token) {
-    return isNull(token) || isUndefined(token);
-}
+export const isNone = token => isNull(token) || isUndefined(token);
 
-/**
- * Helper too match a <token.type> against a <type>.
- */
-function matches (type) {
-    return function (token = { type: null }) {
-        return token.type === type;
-    }
-}
-
-function matchesOf (types) {
-    return function (token = { type: null }) {
-        return types[token.type] !== undefined;
-    }
-}
-
-/**
- * Require calls, throw an error if the conditions aren't met.
- */
 
 export const identifier = ensure(isIdentifier, 'Identifier');
 export const variable = ensure(isVariable, 'Variable');
@@ -115,21 +103,12 @@ export const tryStatement = ensure(isTryStatement, 'Try Statement');
 export const ifStatement = ensure(isIfStatement, 'If Statement');
 
 /**
- * Helper function to throw an error of <type> and <token.type> do not match.
- */
-function ensure (matcher, expected) {
-    return function (token = { type: null }) {
-        if (!matcher(token)) throw new ParserError(token, expected);
-    }
-}
-
-/**
  * Constructs and returns a new ParserError.
  */
-export function ParserError (token, ...types) {
-    let expected = types.join(' or ');
-    let err = new Error(`Expected Token ${expected} but got ${token.type}.`);
+export const ParserError = (token, ...types) => {
+    const expected = types.join(' or ');
+    const err = new Error(`Expected Token ${expected} but got ${token.type}.`);
     err.token = token;
     err.name = 'ParserError';
     return err;
-}
+};

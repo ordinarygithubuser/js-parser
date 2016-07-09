@@ -2,7 +2,7 @@ import * as Require from './require';
 
 import parseExpression from  './expression';
 
-export default function parseReturn (tokens) {
+export default tokens => {
     Require.returnStatement(tokens.pop());
 
     return {

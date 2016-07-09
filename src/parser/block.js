@@ -2,8 +2,8 @@ import * as Require from './require';
 
 import parseStatement from './statement';
 
-export default function parseBlock (tokens) {
-    let statements = [];
+export default tokens => {
+    const statements = [];
 
     Require.scopeStart(tokens.pop());
     while (!Require.isScopeEnd(tokens.peek())) {

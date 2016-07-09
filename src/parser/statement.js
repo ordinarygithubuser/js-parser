@@ -10,22 +10,22 @@ import parseThrow from './throw';
 import parseTry from './try';
 import parseIf from './if';
 
-export default function parseStatement (tokens) {
-    let statement = parse(tokens);
+export default tokens => {
+    const statement = parse(tokens);
 
     if (Require.isLineEnd(tokens.peek())) {
         tokens.pop();
     }
     return statement;
-}
+};
 
 /**
  * TODO
  *  switch
  *  for
  */
-function parse (tokens) {
-    let next = tokens.peek();
+const parse = tokens => {
+    const next = tokens.peek();
 
     if (Require.isLineEnd(next)) {
         return { type: 'EmptyStatement' };
@@ -47,4 +47,4 @@ function parse (tokens) {
         return parseIf(tokens);
     }
     return parseExpression(tokens, false);
-}
+};

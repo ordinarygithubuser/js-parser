@@ -2,11 +2,11 @@ import * as Require from './require';
 
 import parseExpression from './expression';
 
-export default function parseClass (tokens) {
-    let clazz = { type: 'Class' };
+export default tokens => {
+    const clazz = { type: 'Class' };
 
     Require.classDefinition(tokens.pop());
-    let name = tokens.pop();
+    const name = tokens.pop();
     Require.identifier(name);
     clazz.name = name.value;
 

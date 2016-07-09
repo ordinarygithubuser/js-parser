@@ -1,5 +1,3 @@
-export default function UID (id = 0) {
-    return function next () {
-        return id++;
-    }
+export default (id = 0) => {
+    return () => id++;
 }

@@ -8,8 +8,12 @@ import parseMember from './member';
 import parseObject from './object';
 import parseClass from './class';
 
-export default function parseExpression (tokens, anon = true) {
-    let next = tokens.peek();
+const Type = (type, value) => ({ type, value });
+const Expression = (type, value) => ({ type, value });
+const BinaryExpression = (type, left, right) => ({ type, left, right });
+
+const parseExpression = (tokens, anon = true) => {
+    const next = tokens.peek();
     let expr = null;
 
     // TODO binary expressions, new, !
@@ -31,10 +35,10 @@ export default function parseExpression (tokens, anon = true) {
         return parseBinaryExpression(tokens, expr);
     }
     return expr;
-}
+};
 
-function parseSimpleExpression (tokens) {
-    let  lookAhead = tokens.peek(1);
+const parseSimpleExpression = (tokens) => {
+    const lookAhead = tokens.peek(1);
 
     if (Require.isMemberAccess(lookAhead)) {
         return parseMember(tokens);
@@ -46,60 +50,52 @@ function parseSimpleExpression (tokens) {
         return parseArrayAccess(tokens);
     }
     return convert(tokens.pop());
-}
+};
 
-function parseBinaryExpression (tokens, left) {
-    let next = tokens.pop();
+const parseBinaryExpression = (tokens, left) => {
+    const next = tokens.pop();
     Require.binaryExpression(next);
 
-    function binExpr (type, right) {
-        return { type, left, right }
-    }
-
-    // TODO &<, >, ==,  %
+    // TODO & <, >, ==,  %
     if (Require.isAddition(next)) {
-        return binExpr('AdditionExpression', parseExpression(tokens));
+        return BinaryExpression('AdditionExpression', left, parseExpression(tokens));
     } else if (Require.isSubtraction(next)) {
-        return binExpr('SubtractionExpression', parseExpression(tokens));
+        return BinaryExpression('SubtractionExpression', left, parseExpression(tokens));
     } else if (Require.isMultiplication(next)) {
-        return binExpr('MultiplicationExpression', parseExpression(tokens));
+        return BinaryExpression('MultiplicationExpression', left, parseExpression(tokens));
     } else if (Require.isDivision(next)) {
-        return binExpr('DivisionExpression', parseExpression(tokens));
+        return BinaryExpression('DivisionExpression', left, parseExpression(tokens));
     }else if (Require.isAnd(next)) {
-        return binExpr('AndExpression', parseExpression(tokens));
+        return BinaryExpression('AndExpression', left, parseExpression(tokens));
     } else if (Require.isOr(next)) {
-        return binExpr('OrExpression', parseExpression(tokens));
+        return BinaryExpression('OrExpression', left, parseExpression(tokens));
     }
-}
+    // TODO: awaited bin expr, but got none!
+};
 
-function parseNone (tokens) {
-    let token = tokens.pop();
-    let expression = {
-        type: token.type,
-        value: undefined
-    };
+const parseNone = tokens => {
+    const token = tokens.pop();
 
     if (Require.isNull(token)) {
-        expression.value = null;
+        return Expression(token.type, null);
+    } else {
+        return Expression(token.type, undefined);
     }
-    return expression;
-}
+};
 
-function convert (token) {
-    let val = token.value;
-
-    function type (type, value) {
-        return { type, value };
-    }
+const convert = token => {
+    const val = token.value;
 
     if (/^\d+(\.(\d)*)?$/.test(val)) {
-        return type('Number', parseFloat(val));
+        return Type('Number', parseFloat(val));
     } else if (val === 'true') {
-        return type('Boolean', true);
+        return Type('Boolean', true);
     } else if (val === 'false') {
-        return type('Boolean', false);
+        return Type('Boolean', false);
     } else if (Require.isString(token)) {
-        return type('String', val);
+        return Type('String', val);
     }
     return { type: 'Reference', ref: val };
-}
+};
+
+export default parseExpression;

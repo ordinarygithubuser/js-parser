@@ -2,7 +2,7 @@ import * as Require from './require';
 
 import parseExpression from './expression';
 
-export default function parseThrow (tokens) {
+export default tokens => {
     Require.throwStatement(tokens.pop());
 
     return {

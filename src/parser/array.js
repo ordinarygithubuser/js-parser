@@ -2,8 +2,8 @@ import * as Require from './require';
 
 import parseExpression from './expression';
 
-export function parseArrayDefinition (tokens) {
-    let elements = [];
+export const parseArrayDefinition = tokens => {
+    const elements = [];
     let first = true;
 
     Require.arrayStart(tokens.pop());
@@ -18,15 +18,15 @@ export function parseArrayDefinition (tokens) {
         type: 'Array',
         elements: elements
     };
-}
+};
 
-export function parseArrayAccess (tokens) {
+export const parseArrayAccess = tokens => {
     Require.arrayStart(tokens.pop());
-    let value = parseExpression(tokens);
+    const value = parseExpression(tokens);
     Require.arrayEnd(tokens.pop());
 
     return {
         type: 'ArrayAccess',
         value: value
     };
-}
+};

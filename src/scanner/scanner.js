@@ -84,13 +84,13 @@ let transitions = [
  * @param text: The String to tokenize.
  * @returns Stream<Token>
  */
-export function scan (text) {
-    let startState = new States.Symbol();
-    let defaultState = new States.Invalid();
-    let machine = Machine(startState, defaultState, transitions);
+export const scan = text => {
+    const startState = new States.Symbol();
+    const defaultState = new States.Invalid();
+    const machine = Machine(startState, defaultState, transitions);
 
     return machine.run(text).copy(token => {
         return token.type !== Constants.SYMBOLS[' '];
     });
-}
+};
 

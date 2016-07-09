@@ -3,9 +3,9 @@ import * as Require from './require';
 import parseExpression from './expression';
 import parseList from './list';
 
-export default function parseMethod (tokens) {
-    let name = tokens.pop();
-    let args = [];
+export default tokens => {
+    const name = tokens.pop();
+    const args = [];
 
     Require.identifier(name);
     Require.parameterStart(tokens.pop());

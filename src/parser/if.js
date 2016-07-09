@@ -4,8 +4,8 @@ import parseExpression from './expression';
 import parseStatement from './statement';
 import parseBlock from './block';
 
-export default function parseIf (tokens) {
-    let statement = { type: 'If' };
+export default tokens => {
+    const statement = { type: 'If' };
 
     Require.ifStatement(tokens.pop());
     Require.parameterStart(tokens.pop());

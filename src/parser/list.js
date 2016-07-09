@@ -1,6 +1,6 @@
 import * as Require from './require';
 
-export default function parseList (tokens, condition, method) {
+export default (tokens, condition, method) => {
     let finished =  false;
 
     while (condition(tokens) && !finished) {
@@ -12,4 +12,4 @@ export default function parseList (tokens, condition, method) {
             finished = true;
         }
     }
-}
+};

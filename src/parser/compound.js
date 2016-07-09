@@ -1,8 +1,9 @@
 import * as Require from './require';
 
+// TODO what is this? LOL
 // TODO compound parsing
-export default function parseCompound (tokens) {
-    let compound = { _: '' };
+export default tokens => {
+    const compound = { _: '' };
 
     Require.compoundStart(tokens.pop());
     while (!Require.isCompoundEnd(tokens.peek())) {
@@ -10,4 +11,4 @@ export default function parseCompound (tokens) {
     }
     tokens.pop();
     return compound;
-}
+};

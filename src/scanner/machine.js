@@ -10,9 +10,9 @@ import Stream from '../common/stream';
  * @param transitions: An array of valid transitions.
  * @returns {{ run: Function }}
  */
-export default function Machine (startState, defaultState, transitions) {
-    function run (text) {
-        let tokens = Stream();
+export default (startState, defaultState, transitions) => {
+    const run = text => {
+        const tokens = Stream();
         let state = startState;
 
         text.split('\n').map((chars, line) => {
@@ -23,12 +23,12 @@ export default function Machine (startState, defaultState, transitions) {
         });
         state.finish(tokens);
         return tokens;
-    }
+    };
 
     function step (stream, state, input) {
-        for (let trans of transitions) {
+        for (const trans of transitions) {
             if (trans.matches(state, input.char)) {
-                let nextState = trans.getNext(state, input);
+                const nextState = trans.getNext(state, input);
 
                 if (!nextState.equals(state)) {
                     state.finish(stream);

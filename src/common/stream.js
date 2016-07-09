@@ -1,31 +1,19 @@
-function identity (item) {
-    return item;
-}
+const identity = item => item;
 
-export default function Stream (array = []) {
-    function add (item) {
-        array.push(item);
-    }
+const Stream = (items = []) => {
+    const add = item => items.push(item);
 
-    function pop () {
-        return array.splice(0, 1)[0];
-    }
+    const pop = () => items.splice(0, 1)[0];
 
-    function peek (depth = 0) {
-       return array[depth];
-    }
+    const peek = (depth = 0) => items[depth];
 
-    function size () {
-        return array.length;
-    }
+    const size = () => items.length;
 
-    function copy (filter = identity) {
-        return Stream(array.filter(filter));
-    }
+    const copy = (filter = identity) => Stream(items.filter(filter));
 
-    function list (filter = identity) {
-        return array.filter(filter);
-    }
+    const list = (filter = identity) => items.filter(filter);
 
     return { add, pop, peek, size, copy, list };
-}
+};
+
+export default Stream;

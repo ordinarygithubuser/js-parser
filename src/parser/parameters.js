@@ -2,7 +2,7 @@ import * as Require from './require';
 
 import parseList from './list';
 
-export default function parseParameters (tokens) {
+export default tokens => {
     let params = [];
     Require.parameterStart(tokens.pop());
 

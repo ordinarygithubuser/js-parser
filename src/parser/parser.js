@@ -2,11 +2,11 @@ import { isLineEnd } from './require';
 
 import parseStatement from './statement';
 
-export function parse (tokens) {
-    let statements = [];
-    let errors = [];
+export const parse  = tokens => {
+    const statements = [];
+    const errors = [];
 
-    while(tokens.peek()) {
+    while (tokens.peek()) {
         try {
             statements.push(parseStatement(tokens));
         } catch (error) {
@@ -15,10 +15,10 @@ export function parse (tokens) {
         }
     }
     return { statements, errors };
-}
+};
 
-function skipToLineEnd (tokens) {
+const skipToLineEnd = tokens => {
     if (!isLineEnd(tokens.pop()) && tokens.peek()) {
         skipToLineEnd(tokens);
     }
-}
+};

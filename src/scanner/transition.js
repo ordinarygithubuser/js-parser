@@ -7,15 +7,15 @@
  * @param State: Constructor for the following State.
  * @returns {{ matches: Function, getNext: Function }}
  */
-export default function Transition (type, matcher, State) {
-    function matches (state, input) {
+export default (type, matcher, State) => {
+    const matches = (state, input) => {
         return state.matches(type) && matcher(input, state);
-    }
+    };
 
-    function getNext (state, input) {
+    const getNext = (state, input) => {
         if (!State) return state;
         return new State(input.line, input.pos);
-    }
+    };
 
     return { matches, getNext };
-}
+};

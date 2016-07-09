@@ -1,12 +1,13 @@
-import ParserSuite from './parser';
-import ScannerSuite from './scanner';
+import Runner from 'test-runner';
+import Parser from './parser';
+import Scanner from './scanner';
 
-let suites = [
-    ScannerSuite, ParserSuite
+const suites = [
+    Scanner(Runner),
+    Parser(Runner)
 ];
 
 suites.map(suite => {
     suite.run();
     suite.log();
-    console.log();
 });

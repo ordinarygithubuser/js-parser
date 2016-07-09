@@ -2,8 +2,8 @@ import * as Require from './require';
 
 import parseList from './list';
 
-export default function parseImport (tokens) {
-    let imp = {
+export default tokens => {
+    const imp = {
         type: 'Import',
         main: null,
         alias: null,
@@ -35,8 +35,8 @@ export default function parseImport (tokens) {
     return imp;
 }
 
-function parseImportList (tokens) {
-    let list = [];
+const parseImportList = tokens => {
+    const list = [];
 
     Require.scopeStart(tokens.pop());
     parseList(tokens,
@@ -45,11 +45,11 @@ function parseImportList (tokens) {
     );
     Require.scopeEnd(tokens.pop());
     return list;
-}
+};
 
-function parseFrom (tokens) {
+const parseFrom = tokens => {
     Require.fromStatement(tokens.pop());
-    let file = tokens.pop();
+    const file = tokens.pop();
     Require.isString(file);
     return file.value;
-}
+};

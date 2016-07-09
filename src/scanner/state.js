@@ -1,12 +1,11 @@
 import * as Constants from '../common/constants';
 import UID from '../common/uid';
 
-let nextID = UID();
+const nextID = UID();
 
 /**
- * A State is localized by a line number <line> and
- * a position <pos> on this line. Each State owns a
- * unique id to determine it's identity.
+ * A State is localized by a line number <line> and a position <pos> on this line.
+ * Each State owns a unique id to determine it's identity.
  */
 class State {
     constructor (line, pos) {
@@ -28,7 +27,7 @@ class State {
     }
 
     add (stream, value, type) {
-        let { line, pos } = this;
+        const { line, pos } = this;
         stream.add({ value, type, line, pos });
     }
 
@@ -54,8 +53,8 @@ class MultiChar extends State {
 
 export class KeywordIdentifier extends MultiChar {
     finish (stream) {
-        let { value } = this;
-        let type = Constants.KEYWORDS[value];
+        const { value } = this;
+        const type = Constants.KEYWORDS[value];
 
         if (type) this.add(stream, value, type);
         else this.add(stream, value, 'Identifier');
@@ -64,15 +63,15 @@ export class KeywordIdentifier extends MultiChar {
 
 export class Symbol extends State {
     process (char, stream) {
-        let type = Constants.SYMBOLS[char];
+        const type = Constants.SYMBOLS[char];
         if (type) this.add(stream, char , type);
     }
 }
 
 export class Operator extends MultiChar {
     finish (stream) {
-        let { value } = this;
-        let type = Constants.OPERATORS[value];
+        const { value } = this;
+        const type = Constants.OPERATORS[value];
 
         if (type) this.add(stream, value, type);
     }
@@ -96,7 +95,7 @@ export class Whitespace extends MultiChar {
 
 export class String extends MultiChar {
     finish (stream) {
-        let value = this.value.substr(1, this.value.length);
+        const value = this.value.substr(1, this.value.length);
         this.add(stream, value, 'String');
     }
 }

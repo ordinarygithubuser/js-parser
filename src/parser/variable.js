@@ -3,9 +3,9 @@ import * as Require from './require';
 import parseExpression from './expression';
 import parseCompound from './compound';
 
-export default function parseVariable (tokens) {
+export default tokens => {
     Require.variable(tokens.peek());
-    let variable =  {
+    const variable =  {
         type: tokens.pop().type,
         value: undefined
     };

@@ -3,8 +3,8 @@ import * as Require from './require';
 import parseParameters from './parameters';
 import parseBlock from './block';
 
-export default function parseTry (tokens) {
-    let statement = { type: 'Try' };
+export default tokens => {
+    const statement = { type: 'Try' };
 
     Require.tryStatement(tokens.pop());
     statement.try = parseBlock(tokens);
