@@ -47,7 +47,12 @@ export const SYMBOLS = {
     '[': 'EdgeBracketOpen',
     ']': 'EdgeBracketClose',
     '{': 'SquareBracketOpen',
-    '}': 'SquareBracketClose'
+    '}': 'SquareBracketClose',
+    '<': 'Smaller',
+    '>': 'Greater',
+    '<=': 'SmallerEquals',
+    '>=': 'GreaterEquals',
+    '==': 'Equals'
 };
 
 export const SYMBOL_TYPES = {
@@ -74,7 +79,13 @@ export const OPERATORS = {
     '&&': 'And',
     '||': 'Or',
     '%': 'Modulo',
-    '?': 'Ternary'
+    '?': 'Ternary',
+    '<': 'Smaller',
+    '>': 'Greater',
+    '<=': 'SmallerEquals',
+    '>=': 'GreaterEquals',
+    '==': 'Equals'
+
 };
 
 export const OPERATOR_TYPES = {
@@ -87,7 +98,12 @@ export const OPERATOR_TYPES = {
     BinaryAnd: 'BinaryAnd',
     BinaryOr: 'BinaryOr',
     Module: 'Module',
-    Ternary: 'Ternary'
+    Ternary: 'Ternary',
+    'Smaller': 'Smaller',
+    'Greater': 'Greater',
+    'SmallerEquals': 'SmallerEquals',
+    'GreaterEquals': 'GreaterEquals',
+    'Equals': 'Equals'
 };
 
 export const NOISE = {

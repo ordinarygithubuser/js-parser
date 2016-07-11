@@ -56,7 +56,7 @@ const parseBinaryExpression = (tokens, left) => {
     const next = tokens.pop();
     Require.binaryExpression(next);
 
-    // TODO & <, >, ==,  %
+    // TODO &, %
     if (Require.isAddition(next)) {
         return BinaryExpression('AdditionExpression', left, parseExpression(tokens));
     } else if (Require.isSubtraction(next)) {
@@ -69,6 +69,18 @@ const parseBinaryExpression = (tokens, left) => {
         return BinaryExpression('AndExpression', left, parseExpression(tokens));
     } else if (Require.isOr(next)) {
         return BinaryExpression('OrExpression', left, parseExpression(tokens));
+    } else if (Require.isSmaller(next)) {
+        return BinaryExpression('SmallerExpression', left, parseExpression(tokens));
+    } else if (Require.isSmallerEquals(next)) {
+        return BinaryExpression('SmallerEqualsExpression', left, parseExpression(tokens));
+    } else if (Require.isGreater(next)) {
+        return BinaryExpression('GreaterExpression', left, parseExpression(tokens));
+    } else if (Require.isGreaterEquals(next)) {
+        return BinaryExpression('GreaterEqualsExpression', left, parseExpression(tokens));
+    } else if (Require.isEquals(next)) {
+        return BinaryExpression('EqualsExpression', left, parseExpression(tokens));
+    } else {
+        console.log('dead end', next)
     }
     // TODO: awaited bin expr, but got none!
 };

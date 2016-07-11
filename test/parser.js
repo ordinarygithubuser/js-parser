@@ -159,13 +159,36 @@ export default Runner => {
 
     suite.test('For (Classical)', test => {
         const { statements, errors } = parse(scan(`
-            for(let i = 0; i < 100; i++) {
+            for(let i = 0; i < 100; i + 1) {
                 console.log(i);
             }
         `));
 
-        console.log(statements, errors);
-        //test.equals();
+        const { pre, post, condition, body } = statements[0];
+
+        test.equals(pre.type, 'Let');
+        test.equals(pre.name, 'i');
+        test.equals(pre.value.type, 'Number');
+        test.equals(pre.value.value, 0);
+
+        test.equals(condition.type, 'SmallerExpression');
+        test.equals(condition.left.type, 'Reference');
+        test.equals(condition.left.ref, 'i');
+        test.equals(condition.right.type, 'Number');
+        test.equals(condition.right.value, 100);
+
+        test.equals(post.left.type, 'Reference');
+        test.equals(post.left.ref, 'i');
+        test.equals(post.right.type, 'Number');
+        test.equals(post.right.value, 1);
+
+        test.equals(body[0].type, 'Member'); // TODO: really?
+        test.equals(body[0].ref, 'console');
+        test.equals(body[0].value.type, 'Method');
+        test.equals(body[0].value.name, 'log');
+        test.equals(body[0].value.arguments.length, 1);
+        test.equals(body[0].value.arguments[0].type, 'Reference');
+        test.equals(body[0].value.arguments[0].ref, 'i');
     });
 
     suite.test('Try Catch', test => {
@@ -245,6 +268,10 @@ export default Runner => {
         test.equals(clazz.base.type, 'Function');
         test.equals(clazz.base.name, null);
         test.equals(clazz.body, []);
+    });
+
+    suite.test('Smaller / Greater / Equals', test => {
+
     });
 
     suite.test('Class Definition with Constructor and Method', test => {

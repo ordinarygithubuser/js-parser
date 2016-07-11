@@ -1,26 +1,29 @@
 import * as Require from './require';
 
 import parseExpression from './expression';
-import parseStatement from './statement';
+import parseVariable from './variable';
 import parseBlock from './block';
 
 export default tokens => {
-    const statement = { type: 'If' };
+    const statement = { type: 'For' };
 
-    Require.ifStatement(tokens.pop());
+    Require.forStatement(tokens.pop());
+
     Require.parameterStart(tokens.pop());
+    statement.pre = parseVariableOrExpression(tokens);
+    Require.lineEnd(tokens.pop());
     statement.condition = parseExpression(tokens);
+    Require.lineEnd(tokens.pop());
+    statement.post = parseExpression(tokens);
     Require.parameterEnd(tokens.pop());
+    statement.body = parseBlock(tokens);
 
-    if (Require.isScopeStart(tokens.peek())) {
-        statement.then = parseBlock(tokens);
-    } else {
-        statement.then = [ parseStatement(tokens) ];
-    }
-
-    if (Require.isElseStatement(tokens.peek())) {
-        tokens.pop();
-        statement.else = parseBlock(tokens)
-    }
     return statement;
 }
+
+const parseVariableOrExpression = tokens => {
+    if (Require.isVariable(tokens.peek())) {
+        return parseVariable(tokens);
+    }
+    return parseExpression(tokens);
+};

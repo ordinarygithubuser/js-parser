@@ -28,7 +28,6 @@ export const isClass = matches(Constants.KEYWORDS.class);
 export const isExtension = matches(Constants.KEYWORDS.extends);
 export const isAsterisk = matches(Constants.OPERATOR_TYPES.Multiplication);
 export const isAs = matches(Constants.KEYWORDS.as);
-export const isConstructor = matches(Constants.KEYWORDS.constr);
 
 export const isCompoundStart = matches(Constants.SYMBOL_TYPES.SquareBracketOpen);
 export const isCompoundEnd = matches(Constants.SYMBOL_TYPES.SquareBracketClose);
@@ -51,6 +50,12 @@ export const isMultiplication = matches(Constants.OPERATOR_TYPES.Multiplication)
 export const isDivision = matches(Constants.OPERATOR_TYPES.Division);
 export const isAnd = matches(Constants.OPERATOR_TYPES.And);
 export const isOr = matches(Constants.OPERATOR_TYPES.Or);
+
+export const isSmaller = matches(Constants.OPERATOR_TYPES.Smaller);
+export const isGreater = matches(Constants.OPERATOR_TYPES.Greater);
+export const isSmallerEquals = matches(Constants.OPERATOR_TYPES.SmallerEquals);
+export const isGreaterEquals = matches(Constants.OPERATOR_TYPES.GreaterEquals);
+export const isEquals = matches(Constants.OPERATOR_TYPES.Equals);
 
 export const isReturnStatement = matches(Constants.KEYWORDS.return);
 export const isImportStatement = matches(Constants.KEYWORDS.import);
@@ -92,6 +97,8 @@ export const parameterEnd = ensure(isParameterEnd, 'Parameter End');
 
 export const objectStart = ensure(isObjectStart, 'Object Start');
 export const objectEnd = ensure(isObjectEnd, 'Object End');
+
+export const lineEnd = ensure(isLineEnd, 'Line End');
 
 export const returnStatement = ensure(isReturnStatement, 'Return Statement');
 export const importStatement = ensure(isImportStatement, 'Import Statement');

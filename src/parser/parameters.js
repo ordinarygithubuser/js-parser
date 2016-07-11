@@ -2,23 +2,20 @@ import * as Require from './require';
 
 import parseList from './list';
 
-export default tokens => {
-    let params = [];
-    Require.parameterStart(tokens.pop());
+const Parameter = token => ({
+    type: 'Parameter',
+    name: token.value
+});
 
+export default tokens => {
+    const params = [];
+
+    Require.parameterStart(tokens.pop());
     // TODO: compound param
     parseList(tokens,
         ts => Require.isIdentifier(ts.peek()),
         ts => params.push(Parameter(ts.pop()))
     );
-
     Require.parameterEnd(tokens.pop());
     return params;
-}
-
-function Parameter (token) {
-    return {
-        type: 'Parameter',
-        name: token.value
-    };
 }
