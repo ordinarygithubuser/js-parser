@@ -157,6 +157,17 @@ export default Runner => {
         test.equals(loop.body[0].else, undefined);
     });
 
+    suite.test('For (Classical)', test => {
+        const { statements, errors } = parse(scan(`
+            for(let i = 0; i < 100; i++) {
+                console.log(i);
+            }
+        `));
+
+        console.log(statements, errors);
+        //test.equals();
+    });
+
     suite.test('Try Catch', test => {
         const { statements } = parse(scan(`
             try {
@@ -234,6 +245,23 @@ export default Runner => {
         test.equals(clazz.base.type, 'Function');
         test.equals(clazz.base.name, null);
         test.equals(clazz.body, []);
+    });
+
+    suite.test('Class Definition with Constructor and Method', test => {
+        const { statements } = parse(scan(`class SimpleClass {
+            constructor () {}
+            action (p) {}
+        }`));
+        const clazz = statements[0];
+        const body = clazz.body;
+
+        test.equals(clazz.type, 'Class');
+        test.equals(clazz.name, 'SimpleClass');
+        test.equals(body.length, 2);
+        test.equals(body[0].name, 'constructor');
+        test.equals(body[0].parameters, []);
+        test.equals(body[1].name, 'action');
+        test.equals(body[1].parameters[0].name, 'p');
     });
 
     suite.test('Binary AND and OR Expression', test => {

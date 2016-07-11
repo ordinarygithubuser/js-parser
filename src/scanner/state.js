@@ -56,7 +56,7 @@ export class KeywordIdentifier extends MultiChar {
         const { value } = this;
         const type = Constants.KEYWORDS[value];
 
-        if (type) this.add(stream, value, type);
+        if (typeof type == 'string') this.add(stream, value, type);
         else this.add(stream, value, 'Identifier');
     }
 }

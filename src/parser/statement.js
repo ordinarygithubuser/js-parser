@@ -8,6 +8,7 @@ import parseExport from './export';
 import parseWhile from './while';
 import parseThrow from './throw';
 import parseTry from './try';
+import parseFor from './for';
 import parseIf from './if';
 
 export default tokens => {
@@ -43,6 +44,8 @@ const parse = tokens => {
         return parseThrow(tokens);
     } else if (Require.isTryStatement(next)) {
         return parseTry(tokens);
+    } else if (Require.isForStatement(next)) {
+        return parseFor(tokens);
     } else if (Require.isIfStatement(next)) {
         return parseIf(tokens);
     }

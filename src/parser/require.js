@@ -28,6 +28,7 @@ export const isClass = matches(Constants.KEYWORDS.class);
 export const isExtension = matches(Constants.KEYWORDS.extends);
 export const isAsterisk = matches(Constants.OPERATOR_TYPES.Multiplication);
 export const isAs = matches(Constants.KEYWORDS.as);
+export const isConstructor = matches(Constants.KEYWORDS.constr);
 
 export const isCompoundStart = matches(Constants.SYMBOL_TYPES.SquareBracketOpen);
 export const isCompoundEnd = matches(Constants.SYMBOL_TYPES.SquareBracketClose);
