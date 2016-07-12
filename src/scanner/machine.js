@@ -25,7 +25,7 @@ export default (startState, defaultState, transitions) => {
         return tokens;
     };
 
-    function step (stream, state, input) {
+    const step = (stream, state, input) => {
         for (const trans of transitions) {
             if (trans.matches(state, input.char)) {
                 const nextState = trans.getNext(state, input);
@@ -38,7 +38,7 @@ export default (startState, defaultState, transitions) => {
         }
         state.finish(stream);
         return defaultState;
-    }
+    };
 
     return { run };
 }

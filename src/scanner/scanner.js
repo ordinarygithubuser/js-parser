@@ -39,7 +39,7 @@ import Transition from './transition';
  *
  * invalid      -> invalid      by loop
  */
-let transitions = [
+const transitions = [
     Transition(States.Whitespace, Matcher.isKeyIdentPrefix, States.KeywordIdentifier),
     Transition(States.Whitespace, Matcher.isOperator, States.Operator),
     Transition(States.Whitespace, Matcher.isSymbol, States.Symbol),
